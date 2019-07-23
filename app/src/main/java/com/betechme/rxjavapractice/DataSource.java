@@ -3,7 +3,7 @@ package com.betechme.rxjavapractice;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataSource {
+class DataSource {
 
     public static List<Task> createTaskList(){
         List<Task> tasks = new ArrayList<>();
