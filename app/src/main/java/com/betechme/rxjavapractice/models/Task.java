@@ -1,4 +1,4 @@
-package com.betechme.rxjavapractice;
+package com.betechme.rxjavapractice.models;
 
 class Task {
     private String description;

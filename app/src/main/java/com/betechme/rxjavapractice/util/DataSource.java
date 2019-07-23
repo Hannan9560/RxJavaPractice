@@ -1,4 +1,6 @@
-package com.betechme.rxjavapractice;
+package com.betechme.rxjavapractice.util;
+
+import com.betechme.rxjavapractice.models.Task;
 
 import java.util.ArrayList;
 import java.util.List;
