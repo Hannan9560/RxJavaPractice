@@ -1,6 +1,6 @@
 package com.betechme.rxjavapractice.models;
 
-class Task {
+public class Task {
     private String description;
     private boolean isComplete;
     private int priority;

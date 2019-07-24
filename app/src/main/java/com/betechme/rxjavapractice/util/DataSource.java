@@ -5,7 +5,7 @@ import com.betechme.rxjavapractice.models.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-class DataSource {
+public class DataSource {
 
     public static List<Task> createTaskList(){
         List<Task> tasks = new ArrayList<>();
