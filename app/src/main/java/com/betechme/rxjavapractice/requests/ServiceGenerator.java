@@ -1,6 +1,6 @@
 package com.betechme.rxjavapractice.requests;
 
-import com.betechme.rxjavapractice.util.Constants;
+import com.betechme.rxjavapractice.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

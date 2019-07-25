@@ -1,31 +1,21 @@
 package com.betechme.rxjavapractice;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.betechme.rxjavapractice.models.Task;
 import com.betechme.rxjavapractice.util.DataSource;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,19 +33,20 @@ public class MainActivity extends AppCompatActivity {
         // ui
         TextView textView = findViewById(R.id.textView);
 
-        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.makeQuery().observe(this, new Observer<ResponseBody>() {
-            @Override
-            public void onChanged(@Nullable ResponseBody responseBody) {
-                Log.d(TAG, "onChanged: this is a live data response!");
-
-                try {
-                    Log.d(TAG, "onChanged: " + responseBody.string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        /*fromPublisher*/
+//        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+//        viewModel.makeQuery().observe(this, new Observer<ResponseBody>() {
+//            @Override
+//            public void onChanged(@Nullable ResponseBody responseBody) {
+//                Log.d(TAG, "onChanged: this is a live data response!");
+//
+//                try {
+//                    Log.d(TAG, "onChanged: " + responseBody.string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
 
 //        Observable<Task> taskObservable = Observable
@@ -370,7 +361,168 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
+
+        /*Filter Operator*/
+//        Observable<Task> observable = Observable
+//                .fromIterable(DataSource.createTaskList())
+//                .filter(new Predicate<Task>() {
+//                    @Override
+//                    public boolean test(Task task) throws Exception {
+//                        return task.isComplete();
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+//
+//        observable.subscribe(new Observer<Task>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(Task task) {
+//                Log.d(TAG, "onNext: " + task.getDescription());
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        });
+
+        /*Distinct Operator*/
+//        Observable<Task> observable = Observable
+//                .fromIterable(DataSource.createTaskList())
+//                .distinct(new Function<Task, String>() {
+//                    @Override
+//                    public String apply(Task task) throws Exception {
+//                        return task.getDescription();
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+
+        /*Take and takeWhile*/
+//        Observable<Task> observable = Observable
+//                .fromIterable(DataSource.createTaskList())
+//                .takeWhile(new Predicate<Task>() {
+//                    @Override
+//                    public boolean test(Task task) throws Exception {
+//                        return task.isComplete();
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+//
+//        observable.subscribe(new Observer<Task>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(Task task) {
+//                Log.d(TAG, "onNext: " + task.getDescription());
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        });
+
+
+        /*Mapping (Task -> String)*/
+//        Observable<String> extractDescriptionObservable = Observable
+//                .fromIterable(DataSource.createTaskList())
+//                .subscribeOn(Schedulers.io())
+//                .map(extractDescriptionFunction)
+//                .observeOn(AndroidSchedulers.mainThread());
+//
+//        extractDescriptionObservable.subscribe(new Observer<String>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(String s) {
+//                Log.d(TAG, "onNext: extrackted description: " + s);
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        });
+
+        /*Mapping (Task -> Updated Task)*/
+
+        Observable<Task> completeTaskObservable = Observable
+                .fromIterable(DataSource.createTaskList())
+                .subscribeOn(Schedulers.io())
+                .map(completedTaskFunction)
+                .observeOn(AndroidSchedulers.mainThread());
+
+        completeTaskObservable.subscribe(new Observer<Task>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+            }
+            @Override
+            public void onNext(Task task) {
+                Log.d(TAG, "onNext: is this task complete? " + task.isComplete());
+            }
+            @Override
+            public void onError(Throwable e) {
+            }
+            @Override
+            public void onComplete() {
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+    Function<Task, Task> completedTaskFunction = new Function<Task, Task>() {
+        @Override
+        public Task apply(Task task) throws Exception {
+            Log.d(TAG, "apply: doing work on thread: " + Thread.currentThread().getName());
+            task.setComplete(true);
+            return task;
+            
+            
+        }
+    };
 
     @Override
     protected void onDestroy() {
