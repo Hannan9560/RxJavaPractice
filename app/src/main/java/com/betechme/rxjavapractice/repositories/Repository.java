@@ -1,7 +1,9 @@
 package com.betechme.rxjavapractice.repositories;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.LiveDataReactiveStreams;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveDataReactiveStreams;
+
 import com.betechme.rxjavapractice.requests.ServiceGenerator;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
